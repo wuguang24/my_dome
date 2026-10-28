@@ -1,0 +1,194 @@
+大棚环境监测工程 - 代码执行逻辑与文件功能说明
+
+一、工程整体执行逻辑（从上电到循环运行）
+
+1. 上电/复位进入 main()
+- 入口文件：User/main.c
+- main() 先完成所有硬件外设与软件模块初始化，然后进入 while(1) 主循环。
+
+2. 初始化阶段（main.c 中 main() 的初始化顺序）
+- OLED_Init()
+  初始化 OLED（SSD1306 类 128x64），并清屏。
+- DHT11_Init()
+  初始化 DHT11 数据脚为上拉输入，并等待上电稳定。
+- MyI2C_Init()
+  初始化软件 I2C（PB6/PB7，开漏输出）。
+- GY302_Init()
+  初始化 BH1750 光照模块（GY-302），设置连续高分辨率模式。
+- JW01_Init()
+  初始化 CO2 模块 JW01：配置 USART1=9600，并清空接收缓冲区。
+- TIM3_Init()
+  初始化 TIM3 定时器产生 10ms 中断基础节拍，在中断里累加生成 flag_100ms / flag_1s。
+- Key_Init()
+  初始化按键输入（GPIO 上拉，低电平为按下）。
+- Buzz_Init()
+  初始化蜂鸣器 GPIO，并设为默认关闭（高电平）。
+- USART3_Init(115200)
+  初始化调试串口 USART3（PB10 TX），用于打印/日志。
+- Actuator_Init()
+  初始化执行器 GPIO（风扇/补光/加湿），并默认关闭。
+- WiFi_ESP8266_Init(115200)
+  初始化 ESP8266：USART2（PA2/PA3），复位脚 PA1，并发送 AT 测试。
+- OneNet_MQTT_Init()
+  初始化 OneNet MQTT 协议栈/状态机。
+
+3. 主循环 while(1) 的运行结构（main.c）
+主循环大体分两层：
+- “随时响应”的按键扫描（Key_Scan）
+- “周期任务”的 100ms tick（flag_100ms）
+
+3.1 按键扫描（每次循环都执行）
+- Key_Scan()：非阻塞下降沿检测
+- 根据返回值调用：
+  - K1：handle_key_mode() 模式切换
+  - K2：handle_key_sel() 设置项切换
+  - K3：handle_key_up() 阈值增加
+  - K4：handle_key_down() 阈值减少
+
+3.2 100ms 周期任务（flag_100ms=1 时执行一次）
+flag_100ms 由 TIM3 中断置位，main.c 中检测后清零，然后执行以下逻辑：
+
+(1) 远程接管超时计时
+- remote_override_tmo_100ms 递减到 0 时，自动退出 remote_override。
+
+(2) 采集传感器
+- DHT11_Read_Data(&temperature, &humidity)
+- light_intensity = GY302_ReadLight()
+- JW01_ProcessData()：解析 USART1 缓冲
+  - 若 JW01_NewDataAvailable() 为 1，则 co2_value = JW01_GetCO2_PPM()
+
+(3) 越限报警判断（buzzer_required）
+- 任意参数超出 low_limit/high_limit 则 buzzer_required=1
+- DHT11 读取失败时仅对光照/CO2 做判断（温湿度不判断）
+
+(4) 控制输出（执行器）
+存在两套控制来源：
+- 远程控制（remote_override=1 时）
+- 本地自动控制（remote_override=0 时）
+
+(4.1) 远程接管优先
+- fan_on/light_on/hum_on 直接采用 remote_* 变量
+- 调用 Actuator_SetFan/SetLight/SetHumidifier 输出
+
+(4.2) 本地自动控制
+- 温度/湿度/CO2 决定风扇
+- 光照决定补光灯
+- 湿度低于下限决定加湿
+- 各控制都加入滞回（TEMP_HYST/HUMI_HYST/LIGHT_HYST/CO2_HYST）避免阈值附近频繁开关。
+
+(5) 蜂鸣器输出
+- buzzer_required=1 => Buzz_ON()
+- 否则 Buzz_Off()
+（蜂鸣器为低电平触发型）
+
+(6) UI 刷新
+- mode==MODE_MONITOR：显示实时值（温湿/光照/CO2），并显示报警标志 H/L
+- mode!=MODE_MONITOR：显示阈值设置界面（整行重绘避免残影）
+
+(7) OneNet MQTT 状态机与周期上报
+- OneNet_MQTT_Tick100ms()：协议栈轮询
+- report_div 计数：每 20 次（约 2 秒）调用 OneNet_MQTT_ReportOnce(...) 上报一次
+
+(8) 主循环延时
+- Delay_ms(10)：降低 CPU 占用，并给轮询/按键留出节拍
+
+二、主要状态变量说明（main.c）
+
+1. UI/设置相关
+- mode：界面模式（监测/设置下限/设置上限）
+- param：当前设置的参数（温/湿/光/CO2）
+- low_limit[4], high_limit[4]：各参数上下限阈值
+
+2. 传感器值
+- temperature, humidity：DHT11 当前值
+- light_intensity：BH1750 当前值（lux）
+- co2_value：JW01 当前值（ppm）
+
+3. 远程控制接管
+- remote_override：1 表示远程接管，自动控制暂停
+- remote_fan_on/remote_light_on/remote_hum_on：远程下发执行器状态
+- remote_override_tmo_100ms：远程接管超时倒计时（100ms单位）
+
+4. 报警/执行器
+- buzzer_required：越限报警标志
+- 自动控制内部使用 static 变量保存风扇/灯/加湿当前状态与来源状态（避免抖动）
+
+三、文件功能说明（按目录）
+
+A. User 目录
+
+1) User/main.c
+- 工程主入口
+- 完成：初始化、按键交互、阈值设置、传感器采集、报警与执行器控制、显示刷新、OneNet 上报
+
+B. Hardware 目录（驱动/硬件抽象层）
+
+1) Hardware/timer.c, timer.h
+- TIM3 10ms 中断节拍
+- 在中断中累加生成：
+  - flag_100ms：100ms 周期任务标志
+  - flag_1s：1s 周期任务标志
+- 维护倒计时 rain_cd（单位秒）
+
+2) Hardware/Key.c, Key.h
+- 按键输入（GPIOB 上拉输入，低电平按下）
+- Key_GetNum()：阻塞式读取（带延时消抖、等待松手）
+- Key_Scan()：非阻塞扫描（下降沿检测，适合主循环实时响应）
+
+3) Hardware/Buzz.c, Buzz.h
+- 蜂鸣器输出（GPIOA）
+- 低电平触发：Reset=响，Set=停
+
+4) Hardware/Actuator.c, Actuator.h
+- 执行器输出（GPIOB）：风扇/补光/加湿
+- 不同执行器有效电平不同：
+  - 风扇：低电平有效
+  - 补光灯/加湿：高电平有效
+- 提供 Set/Get 统一 on/off 语义
+
+5) Hardware/DHT11.c, DHT11.h
+- DHT11 单总线采集温湿度（只用整数部分）
+- 含起始信号、响应等待、40bit 数据读取与校验
+
+6) Hardware/MyI2C.c, MyI2C.h
+- 软件 I2C（PB6=SCL，PB7=SDA，开漏输出）
+- 提供 Start/Stop/SendByte/ReceiveByte/Ack 等基础操作
+- 用于光照 BH1750 等 I2C 设备
+- 备注：MyI2C.h 由于文件编码问题在工具中读取失败，但其功能由 MyI2C.c 对外提供。
+
+7) Hardware/GY302.c, GY302.h
+- GY-302（BH1750）光照采集
+- I2C 发送模式命令，等待测量完成后读 2 字节 raw
+- lux = raw / 1.2
+
+8) Hardware/USART1.c, USART1.h
+- USART1 驱动（PA9/PA10）
+- 本工程主要用于 JW01 CO2 模块
+- RXNE 中断收集到线性缓冲，上层轮询解析
+
+9) Hardware/JW01.c, JW01.h
+- JW01 CO2 模块协议解析
+- 主循环调用 JW01_ProcessData() 从 USART1 缓冲提取帧
+- 识别帧头 0x2C，长度 6 字节，累加校验
+- 提供 NewDataAvailable / GetCO2_PPM
+
+10) Hardware/USART3.c, USART3.h
+- USART3 调试串口（PB10 TX）
+- 目前只做阻塞发送，用于 printf/日志输出
+
+11) Hardware/WiFi_ESP8266.c, WiFi_ESP8266.h
+- ESP8266 AT 驱动
+- USART2 (PA2/PA3) 收发，RXNE 中断逐字节写入接收缓冲
+- 提供：
+  - Init：硬件复位 + AT 测试
+  - ConnectAP：连接热点
+  - TCPConnect：连接服务器
+  - SendTCP：发送数据
+  - GetIPD：提取 +IPD 负载指针
+
+12) Hardware/OLED.c, OLED.h, OLED_Font.h
+- OLED 显示（SSD1306 类）
+- 软件 I2C（PB8/PB9）
+- 提供显示字符/字符串/数字/中文（字模在 OLED_Font.h）
+
+
