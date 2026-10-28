@@ -1,0 +1,72 @@
+<scroll-view class="container" scroll-y="true" enhanced="true" wx:if="{{tool}}">
+  <!-- 工具信息卡片 -->
+  <view class="tool-card">
+    <view class="tool-icon">{{tool.icon}}</view>
+    <view class="tool-info">
+      <text class="tool-name">{{tool.name}}</text>
+      <view class="status-tag {{tool.isBorrowed ? 'borrowed' : 'available'}}">
+        {{tool.statusText || '加载中...'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 工具详情 -->
+  <view class="detail-section">
+    <view class="section-title">工具信息</view>
+    <view class="detail-item">
+      <text class="label">工具编号</text>
+      <text class="value">#{{tool.index}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="label">当前状态</text>
+      <text class="value" style="color: {{tool.statusColor}}">{{tool.statusText || '加载中'}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="label">存放位置</text>
+      <text class="value">第{{tool.index}}格</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button 
+      wx:if="{{!tool.isBorrowed}}"
+      class="action-btn borrow-btn" 
+      bindtap="handleBorrow"
+      loading="{{loading}}"
+      disabled="{{loading}}"
+    >
+      立即借用
+    </button>
+    
+    <button 
+      wx:if="{{tool.isBorrowed}}"
+      class="action-btn return-btn" 
+      bindtap="handleReturn"
+      loading="{{loading}}"
+      disabled="{{loading}}"
+    >
+      归还工具
+    </button>
+
+    <button 
+      wx:if="{{!tool.isBorrowed}}"
+      class="action-btn reserve-btn" 
+      bindtap="handleReserve"
+    >
+      预约使用
+    </button>
+  </view>
+
+  <!-- 使用须知 -->
+  <view class="notice-section">
+    <view class="section-title">使用须知</view>
+    <view class="notice-item">1. 借用后请在规定时间内归还</view>
+    <view class="notice-item">2. 归还时请将工具放回原位并扫描RFID确认</view>
+    <view class="notice-item">3. 超时未归还将收到提醒通知</view>
+    <view class="notice-item">4. 如有损坏请及时报告管理员</view>
+  </view>
+  
+  <!-- 底部占位 -->
+  <view style="height: 60rpx;"></view>
+</scroll-view>

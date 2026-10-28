@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/records/records",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/detail/detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0066CC",
+    "navigationBarTitleText": "智能工具柜",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#0066CC",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "工具",
+        "iconPath": "assets/icon/tool.png",
+        "selectedIconPath": "assets/icon/tool-active.png"
+      },
+      {
+        "pagePath": "pages/records/records",
+        "text": "记录",
+        "iconPath": "assets/icon/message.png",
+        "selectedIconPath": "assets/icon/message-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icon/tool.png",
+        "selectedIconPath": "assets/icon/tool-active.png"
+      }
+    ]
+  }
+}

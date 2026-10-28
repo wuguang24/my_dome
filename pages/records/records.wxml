@@ -1,0 +1,39 @@
+<view class="page-container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker mode="selector" range="{{filterOptions}}" value="{{filterIndex}}" bindchange="onFilterChange">
+      <view class="filter-btn">
+        <text>{{filterOptions[filterIndex]}}</text>
+        <text class="arrow">▼</text>
+      </view>
+    </picker>
+    <view class="clear-btn" bindtap="clearRecords">清空</view>
+  </view>
+
+  <!-- 记录列表 -->
+  <scroll-view class="record-scroll" scroll-y="true" enhanced="true" wx:if="{{records.length > 0}}">
+    <view class="record-list">
+      <view class="record-item" wx:for="{{records}}" wx:key="timestamp">
+        <view class="record-icon {{item.type}}">
+          {{item.type === 'borrow' ? '借' : '还'}}
+        </view>
+        <view class="record-info">
+          <view class="record-title">
+            <text class="tool-name">{{item.toolName}}</text>
+            <text class="record-type {{item.type}}">{{item.type === 'borrow' ? '借用' : '归还'}}</text>
+          </view>
+          <view class="record-meta">
+            <text class="user">{{item.user}}</text>
+            <text class="time">{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:else>
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">暂无记录</text>
+  </view>
+</view>

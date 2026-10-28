@@ -1,0 +1,58 @@
+<scroll-view class="container" scroll-y="true" enhanced="true">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view wx:if="{{isLoggedIn}}" class="user-info">
+      <view class="avatar">{{userInfo.username[0]}}</view>
+      <view class="info">
+        <text class="nickname">{{userInfo.nickname || userInfo.username}}</text>
+        <text class="login-time">登录于 {{userInfo.loginTime}}</text>
+      </view>
+    </view>
+    <view wx:else class="login-prompt" bindtap="goLogin">
+      <view class="avatar">?</view>
+      <text class="prompt-text">点击登录</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section" wx:if="{{isLoggedIn}}">
+    <view class="menu-item" bindtap="showChangePassword">
+      <text class="menu-icon">🔐</text>
+      <text class="menu-text">修改密码</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goRecords">
+      <text class="menu-icon">📋</text>
+      <text class="menu-text">借还记录</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="showAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-text">关于系统</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{isLoggedIn}}">
+    <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+  </view>
+  
+  <!-- 底部占位 -->
+  <view style="height: 60rpx;"></view>
+</scroll-view>
+
+<!-- 修改密码弹窗 -->
+<view class="modal-mask" wx:if="{{showPasswordModal}}" bindtap="hidePasswordModal"></view>
+<view class="modal" wx:if="{{showPasswordModal}}">
+  <view class="modal-title">修改密码</view>
+  <view class="modal-content">
+    <input class="modal-input" placeholder="原密码" password bindinput="onOldPasswordInput" value="{{oldPassword}}" />
+    <input class="modal-input" placeholder="新密码(4-16位)" password bindinput="onNewPasswordInput" value="{{newPassword}}" />
+    <input class="modal-input" placeholder="确认新密码" password bindinput="onConfirmPasswordInput" value="{{confirmPassword}}" />
+  </view>
+  <view class="modal-footer">
+    <button class="modal-btn cancel" bindtap="hidePasswordModal">取消</button>
+    <button class="modal-btn confirm" bindtap="handleChangePassword">确认</button>
+  </view>
+</view>

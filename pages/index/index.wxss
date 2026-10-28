@@ -1,0 +1,220 @@
+/* 页面容器 */
+page {
+  height: 100%;
+  background: linear-gradient(180deg, #e8f4fc 0%, #f5f7fa 100%);
+}
+
+.container {
+  min-height: 100vh;
+  padding: 0 24rpx 180rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部状态栏 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx 0;
+  position: relative;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.status-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-left: 16rpx;
+}
+
+.status-dot.online {
+  background-color: #52c41a;
+  box-shadow: 0 0 8rpx #52c41a;
+}
+
+.status-dot.offline {
+  background-color: #ff4d4f;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* 加载中 */
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #e8e8e8;
+  border-top-color: #1890ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 工具网格 */
+.tool-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+/* 工具卡片 */
+.tool-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 工具图标 */
+.tool-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* 工具信息 */
+.tool-info {
+  flex: 1;
+  margin-left: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.tool-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 状态标签 */
+.status-tag {
+  display: inline-block;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  width: fit-content;
+}
+
+.status-tag.available {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1rpx solid #b7eb8f;
+}
+
+.status-tag.borrowed {
+  background-color: #fff2f0;
+  color: #ff4d4f;
+  border: 1rpx solid #ffccc7;
+}
+
+/* 操作按钮 */
+.tool-btn {
+  min-width: 140rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  border-radius: 36rpx;
+  padding: 0 32rpx;
+  border: none;
+  flex-shrink: 0;
+}
+
+.btn-borrow {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: #fff;
+}
+
+.btn-borrow:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.btn-return {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+  color: #fff;
+}
+
+.btn-return:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.tool-btn[disabled] {
+  background: #d9d9d9 !important;
+  color: #999 !important;
+}
+
+/* 底部刷新按钮 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 40rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.refresh-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #1890ff;
+  background: #e6f7ff;
+  border: 2rpx solid #91d5ff;
+  border-radius: 44rpx;
+}
+
+.refresh-btn:active {
+  background: #bae7ff;
+}
+
+.refresh-btn[disabled] {
+  color: #999;
+  background: #f5f5f5;
+  border-color: #d9d9d9;
+}

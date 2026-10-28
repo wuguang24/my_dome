@@ -1,0 +1,136 @@
+page {
+  height: 100%;
+  background: #f5f7fa;
+}
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+  flex-shrink: 0;
+}
+
+.record-scroll {
+  flex: 1;
+  height: 0;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.arrow {
+  font-size: 20rpx;
+  margin-left: 8rpx;
+  color: #999;
+}
+
+.clear-btn {
+  font-size: 28rpx;
+  color: #ff4d4f;
+}
+
+.record-list {
+  padding: 20rpx;
+}
+
+.record-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.record-icon {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.record-icon.borrow {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+}
+
+.record-icon.return {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+}
+
+.record-info {
+  flex: 1;
+}
+
+.record-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.tool-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.record-type {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.record-type.borrow {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.record-type.return {
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.record-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}

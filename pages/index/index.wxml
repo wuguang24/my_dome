@@ -1,0 +1,48 @@
+<scroll-view class="container" scroll-y="true" enhanced="true" show-scrollbar="true">
+  <!-- 顶部状态栏 -->
+  <view class="header">
+    <text class="title">工具柜</text>
+    <view class="status-dot {{loading ? 'offline' : 'online'}}"></view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 工具列表 -->
+  <view wx:else class="tool-grid">
+    <view wx:for="{{tools}}" wx:key="index" class="tool-card" bindtap="goDetail" data-index="{{item.index}}">
+      <view class="tool-icon">
+        <text class="icon-text">{{item.icon || item.index}}</text>
+      </view>
+      <view class="tool-info">
+        <text class="tool-name">{{item.name}}</text>
+        <view class="status-tag {{item.isBorrowed ? 'borrowed' : 'available'}}">
+          {{item.statusText}}
+        </view>
+      </view>
+      <button 
+        class="tool-btn {{item.isBorrowed ? 'btn-return' : 'btn-borrow'}}" 
+        data-index="{{item.index}}"
+        data-borrowed="{{item.isBorrowed}}"
+        catchtap="handleBorrow"
+        disabled="{{item.loading}}"
+        loading="{{item.loading}}"
+      >
+        {{item.isBorrowed ? '还' : '借'}}
+      </button>
+    </view>
+  </view>
+  
+  <!-- 底部占位 -->
+  <view style="height: 120rpx;"></view>
+</scroll-view>
+
+<!-- 底部刷新按钮 -->
+<view class="footer">
+  <button class="refresh-btn" bindtap="fetchToolStatus" disabled="{{loading}}">
+    刷新状态
+  </button>
+</view>

@@ -1,0 +1,7 @@
+<view class="container">
+  <view wx:for="{{logs}}" wx:key="timestamp" class="log-item">
+    <text class="time">{{formatTime(item.timestamp)}}</text>
+    <text class="type">{{item.event_id}}</text>
+    <text class="content">工具 {{item.params.ToolIndex}}</text>
+  </view>
+</view>

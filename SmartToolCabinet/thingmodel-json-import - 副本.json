@@ -1,0 +1,1053 @@
+{
+  "properties": [
+    {
+      "identifier": "account",
+      "name": "用户账号",
+      "functionType": "u",
+      "accessMode": "rw",
+      "desc": "系统用户账号列表，逗号分隔",
+      "dataType": {
+        "type": "string",
+        "specs": {
+          "length": "256"
+        }
+      }
+    },
+    {
+      "identifier": "password",
+      "name": "用户密码",
+      "functionType": "u",
+      "accessMode": "rw",
+      "desc": "系统用户密码列表，逗号分隔",
+      "dataType": {
+        "type": "string",
+        "specs": {
+          "length": "256"
+        }
+      }
+    },
+    {
+      "identifier": "tool_status",
+      "name": "工具状态",
+      "functionType": "u",
+      "accessMode": "rw",
+      "desc": "6个工具的状态位图，每位对应一个工具状态",
+      "dataType": {
+        "type": "bitMap",
+        "specs": {
+          "length": 6,
+          "define": [
+            {
+              "bit": 0,
+              "0": "螺丝刀在库",
+              "1": "螺丝刀借出"
+            },
+            {
+              "bit": 1,
+              "0": "钳子在库",
+              "1": "钳子借出"
+            },
+            {
+              "bit": 2,
+              "0": "扳手在库",
+              "1": "扳手借出"
+            },
+            {
+              "bit": 3,
+              "0": "锤子在库",
+              "1": "锤子借出"
+            },
+            {
+              "bit": 4,
+              "0": "卷尺在库",
+              "1": "卷尺借出"
+            },
+            {
+              "bit": 5,
+              "0": "工具刀在库",
+              "1": "工具刀借出"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "identifier": "door_status",
+      "name": "柜门状态",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "柜门的开关状态",
+      "dataType": {
+        "type": "bool",
+        "specs": {
+          "true": "开启",
+          "false": "关闭"
+        }
+      }
+    },
+    {
+      "identifier": "alarm_status",
+      "name": "报警状态",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "系统报警状态",
+      "dataType": {
+        "type": "bool",
+        "specs": {
+          "true": "报警中",
+          "false": "正常"
+        }
+      }
+    },
+    {
+      "identifier": "lock_status",
+      "name": "电磁锁状态",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "电磁锁的开关状态",
+      "dataType": {
+        "type": "bool",
+        "specs": {
+          "true": "开启",
+          "false": "关闭"
+        }
+      }
+    },
+    {
+      "identifier": "wifi_signal",
+      "name": "WiFi信号强度",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "WiFi信号强度值",
+      "dataType": {
+        "type": "int32",
+        "specs": {
+          "min": "-100",
+          "max": "0",
+          "unit": "dBm",
+          "step": "1"
+        }
+      }
+    },
+    {
+      "identifier": "system_status",
+      "name": "系统状态",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "智能工具柜系统状态",
+      "dataType": {
+        "type": "enum",
+        "specs": {
+          "0": "初始化中",
+          "1": "运行正常",
+          "2": "维护模式",
+          "3": "离线模式"
+        }
+      }
+    },
+    {
+      "identifier": "error_code",
+      "name": "错误代码",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "系统错误代码",
+      "dataType": {
+        "type": "int32",
+        "specs": {
+          "min": "0",
+          "max": "999",
+          "unit": "",
+          "step": "1"
+        }
+      }
+    },
+    {
+      "identifier": "user_count",
+      "name": "用户数量",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "当前系统中注册的用户总数",
+      "dataType": {
+        "type": "int32",
+        "specs": {
+          "min": "0",
+          "max": "999",
+          "unit": "个",
+          "step": "1"
+        }
+      }
+    },
+    {
+      "identifier": "tool_count",
+      "name": "工具数量",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "当前系统中管理的工具总数",
+      "dataType": {
+        "type": "int32",
+        "specs": {
+          "min": "0",
+          "max": "999",
+          "unit": "个",
+          "step": "1"
+        }
+      }
+    },
+    {
+      "identifier": "borrowed_count",
+      "name": "借用中数量",
+      "functionType": "u",
+      "accessMode": "r",
+      "desc": "当前借用中的工具数量",
+      "dataType": {
+        "type": "int32",
+        "specs": {
+          "min": "0",
+          "max": "999",
+          "unit": "个",
+          "step": "1"
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "identifier": "BorrowEvent",
+      "name": "工具借用事件",
+      "desc": "用户借用工具时触发的事件",
+      "outputData": [
+        {
+          "identifier": "ToolIndex",
+          "name": "工具序号",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "螺丝刀",
+              "2": "钳子",
+              "3": "扳手",
+              "4": "锤子",
+              "5": "卷尺",
+              "6": "工具刀"
+            }
+          }
+        },
+        {
+          "identifier": "RFIDCode",
+          "name": "RFID标签",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "32"
+            }
+          }
+        },
+        {
+          "identifier": "BorrowTime",
+          "name": "借用时间",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "UserName",
+          "name": "用户姓名",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "UserID",
+          "name": "用户ID",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "32"
+            }
+          }
+        }
+      ],
+      "functionType": "u",
+      "eventType": "info"
+    },
+    {
+      "identifier": "ReturnEvent",
+      "name": "工具归还事件",
+      "desc": "用户归还工具时触发的事件",
+      "outputData": [
+        {
+          "identifier": "ToolIndex",
+          "name": "工具序号",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "螺丝刀",
+              "2": "钳子",
+              "3": "扳手",
+              "4": "锤子",
+              "5": "卷尺",
+              "6": "工具刀"
+            }
+          }
+        },
+        {
+          "identifier": "RFIDCode",
+          "name": "RFID标签",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "32"
+            }
+          }
+        },
+        {
+          "identifier": "ReturnTime",
+          "name": "归还时间",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "UserName",
+          "name": "用户姓名",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "BorrowDuration",
+          "name": "借用时长",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "32"
+            }
+          }
+        }
+      ],
+      "functionType": "u",
+      "eventType": "info"
+    },
+    {
+      "identifier": "IllegalOpen",
+      "name": "非法开门报警",
+      "desc": "检测到非法开门时触发的报警",
+      "outputData": [
+        {
+          "identifier": "AlarmCode",
+          "name": "报警代码",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "未授权开门",
+              "2": "开门超时",
+              "3": "门磁异常"
+            }
+          }
+        },
+        {
+          "identifier": "Duration",
+          "name": "持续时间",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "3600",
+              "unit": "秒",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "CabinetID",
+          "name": "柜子编号",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "32"
+            }
+          }
+        }
+      ],
+      "functionType": "u",
+      "eventType": "alert"
+    },
+    {
+      "identifier": "TimeoutAlarm",
+      "name": "借用超时报警",
+      "desc": "工具借用超时触发的报警",
+      "outputData": [
+        {
+          "identifier": "ToolIndex",
+          "name": "工具序号",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "螺丝刀",
+              "2": "钳子",
+              "3": "扳手",
+              "4": "锤子",
+              "5": "卷尺",
+              "6": "工具刀"
+            }
+          }
+        },
+        {
+          "identifier": "OverdueTime",
+          "name": "超时时长",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "10080",
+              "unit": "分钟",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "ToolName",
+          "name": "工具名称",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "UserName",
+          "name": "用户姓名",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        }
+      ],
+      "functionType": "u",
+      "eventType": "alert"
+    },
+    {
+      "identifier": "SystemError",
+      "name": "系统故障上报",
+      "desc": "系统发生故障时上报的事件",
+      "outputData": [
+        {
+          "identifier": "ErrorCode",
+          "name": "故障代码",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "0": "恢复正常",
+              "1": "RFID模块故障",
+              "2": "门磁传感器故障",
+              "3": "电磁锁故障",
+              "4": "WiFi连接失败",
+              "5": "摄像头故障",
+              "6": "存储异常"
+            }
+          }
+        },
+        {
+          "identifier": "ErrorMsg",
+          "name": "故障信息",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "256"
+            }
+          }
+        }
+      ],
+      "functionType": "u",
+      "eventType": "error"
+    },
+    {
+      "identifier": "UserOperate",
+      "name": "用户操作事件",
+      "desc": "用户在系统中进行各种操作时记录的事件",
+      "outputData": [
+        {
+          "identifier": "OperationType",
+          "name": "操作类型",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "添加用户",
+              "2": "编辑用户",
+              "3": "删除用户",
+              "4": "添加工具",
+              "5": "编辑工具",
+              "6": "删除工具",
+              "7": "用户登录",
+              "8": "用户退出",
+              "9": "处理警报"
+            }
+          }
+        },
+        {
+          "identifier": "UserName",
+          "name": "操作用户",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "TargetName",
+          "name": "目标名称",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "128"
+            }
+          }
+        },
+        {
+          "identifier": "OperateTime",
+          "name": "操作时间",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        }
+      ],
+      "functionType": "u",
+      "eventType": "info"
+    }
+  ],
+  "services": [
+    {
+      "name": "添加用户",
+      "identifier": "AddUser",
+      "functionType": "u",
+      "desc": "注册新用户账号",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "Username",
+          "name": "用户账号",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "16"
+            }
+          }
+        },
+        {
+          "identifier": "Password",
+          "name": "用户密码",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "16"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "修改密码",
+      "identifier": "ChangePassword",
+      "functionType": "u",
+      "desc": "修改用户密码",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "Username",
+          "name": "用户账号",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "16"
+            }
+          }
+        },
+        {
+          "identifier": "OldPassword",
+          "name": "原密码",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "16"
+            }
+          }
+        },
+        {
+          "identifier": "NewPassword",
+          "name": "新密码",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "16"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "远程开锁",
+      "identifier": "RemoteUnlock",
+      "functionType": "u",
+      "desc": "远程控制电磁锁开启",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "ToolIndex",
+          "name": "工具序号",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "螺丝刀",
+              "2": "钳子",
+              "3": "扳手",
+              "4": "锤子",
+              "5": "卷尺",
+              "6": "工具刀"
+            }
+          }
+        },
+        {
+          "identifier": "Duration",
+          "name": "开锁时长",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "1",
+              "max": "60",
+              "unit": "秒",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "Mode",
+          "name": "操作模式",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "0": "归还模式",
+              "1": "借用模式"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "手动设置工具状态",
+      "identifier": "SetToolStatus",
+      "functionType": "u",
+      "desc": "手动设置工具的状态（在库/借出）",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "ToolIndex",
+          "name": "工具序号",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "螺丝刀",
+              "2": "钳子",
+              "3": "扳手",
+              "4": "锤子",
+              "5": "卷尺",
+              "6": "工具刀"
+            }
+          }
+        },
+        {
+          "identifier": "Status",
+          "name": "状态设置",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "0": "在库",
+              "1": "借出"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "系统复位",
+      "identifier": "SystemReset",
+      "functionType": "u",
+      "desc": "执行系统复位操作",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "ResetType",
+          "name": "复位类型",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "重启系统",
+              "2": "恢复默认配置",
+              "3": "清除借用记录"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "测试报警",
+      "identifier": "TestAlarm",
+      "functionType": "u",
+      "desc": "测试报警功能",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "AlarmType",
+          "name": "报警类型",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "蜂鸣器报警",
+              "2": "LED报警灯",
+              "3": "全部报警"
+            }
+          }
+        },
+        {
+          "identifier": "Duration",
+          "name": "测试时长",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "1",
+              "max": "30",
+              "unit": "秒",
+              "step": "1"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "拍照并上传",
+      "identifier": "TakePhoto",
+      "functionType": "u",
+      "desc": "控制摄像头拍照并上传图片",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "PhotoType",
+          "name": "拍照类型",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "借用拍照",
+              "2": "归还拍照",
+              "3": "报警拍照"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        },
+        {
+          "identifier": "ImageUrl",
+          "name": "图片URL",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "512"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "获取系统状态",
+      "identifier": "GetSystemStatus",
+      "functionType": "u",
+      "desc": "获取智能工具柜系统的详细状态信息",
+      "callType": "sync",
+      "input": [],
+      "output": [
+        {
+          "identifier": "DeviceID",
+          "name": "设备ID",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "IPAddress",
+          "name": "IP地址",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "64"
+            }
+          }
+        },
+        {
+          "identifier": "Uptime",
+          "name": "运行时间",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "999999",
+              "unit": "分钟",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "MemoryFree",
+          "name": "可用内存",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "32768",
+              "unit": "KB",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "UserCount",
+          "name": "用户数量",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "999",
+              "unit": "个",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "ToolCount",
+          "name": "工具数量",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "999",
+              "unit": "个",
+              "step": "1"
+            }
+          }
+        },
+        {
+          "identifier": "BorrowedCount",
+          "name": "借用中数量",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "999",
+              "unit": "个",
+              "step": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "同步用户数据",
+      "identifier": "SyncUserData",
+      "functionType": "u",
+      "desc": "同步用户管理系统的数据到云端",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "SyncType",
+          "name": "同步类型",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "用户数据",
+              "2": "工具数据",
+              "3": "历史记录",
+              "4": "警报记录",
+              "5": "全部数据"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        },
+        {
+          "identifier": "SyncCount",
+          "name": "同步数量",
+          "dataType": {
+            "type": "int32",
+            "specs": {
+              "min": "0",
+              "max": "9999",
+              "unit": "条",
+              "step": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "处理警报",
+      "identifier": "HandleAlarm",
+      "functionType": "u",
+      "desc": "处理系统中的警报",
+      "callType": "async",
+      "input": [
+        {
+          "identifier": "AlarmID",
+          "name": "警报ID",
+          "dataType": {
+            "type": "string",
+            "specs": {
+              "length": "32"
+            }
+          }
+        },
+        {
+          "identifier": "Action",
+          "name": "处理动作",
+          "dataType": {
+            "type": "enum",
+            "specs": {
+              "1": "标记为已处理",
+              "2": "删除警报"
+            }
+          }
+        }
+      ],
+      "output": [
+        {
+          "identifier": "result",
+          "name": "执行结果",
+          "dataType": {
+            "type": "bool",
+            "specs": {
+              "true": "成功",
+              "false": "失败"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

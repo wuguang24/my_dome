@@ -1,0 +1,65 @@
+<scroll-view class="container" scroll-y="true" enhanced="true">
+  <view class="logo-section">
+    <view class="logo">🔧</view>
+    <text class="title">智能工具柜</text>
+  </view>
+
+  <view class="form-section">
+    <view class="form-item">
+      <text class="label">账号</text>
+      <input 
+        class="input" 
+        type="number"
+        placeholder="请输入8位数字账号" 
+        maxlength="8"
+        value="{{username}}"
+        bindinput="onUsernameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">密码</text>
+      <input 
+        class="input" 
+        placeholder="请输入8位密码" 
+        password="true"
+        maxlength="8"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+    </view>
+
+    <view class="form-item" wx:if="{{!isLogin}}">
+      <text class="label">确认密码</text>
+      <input 
+        class="input" 
+        placeholder="请再次输入密码" 
+        password="true"
+        maxlength="8"
+        value="{{confirmPassword}}"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+
+    <button 
+      class="submit-btn" 
+      bindtap="{{isLogin ? 'handleLogin' : 'handleRegister'}}"
+      loading="{{loading}}"
+      disabled="{{loading}}"
+    >
+      {{isLogin ? '登 录' : '注 册'}}
+    </button>
+
+    <view class="switch-mode" bindtap="switchMode">
+      {{isLogin ? '没有账号？立即注册' : '已有账号？立即登录'}}
+    </view>
+    
+    <view class="tips" wx:if="{{!isLogin}}">
+      <text>账号：8位数字</text>
+      <text>密码：8位数字或字母</text>
+    </view>
+  </view>
+  
+  <!-- 底部占位 -->
+  <view style="height: 60rpx;"></view>
+</scroll-view>

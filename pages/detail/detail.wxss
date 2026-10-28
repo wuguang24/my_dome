@@ -1,0 +1,129 @@
+page {
+  height: 100%;
+  background: #f5f7fa;
+}
+
+.container {
+  height: 100%;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.tool-card {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #0066CC 0%, #004499 100%);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  color: #fff;
+}
+
+.tool-icon {
+  font-size: 80rpx;
+  margin-right: 30rpx;
+}
+
+.tool-info {
+  flex: 1;
+}
+
+.tool-name {
+  font-size: 40rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.status-tag {
+  display: inline-block;
+  font-size: 24rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.status-tag.available {
+  background: rgba(82, 196, 26, 0.2);
+  color: #95de64;
+}
+
+.status-tag.borrowed {
+  background: rgba(255, 77, 79, 0.2);
+  color: #ff7875;
+}
+
+.detail-section, .notice-section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-top: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.value {
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.action-section {
+  margin-top: 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.action-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 34rpx;
+  font-weight: 500;
+  border-radius: 48rpx;
+  border: none;
+}
+
+.borrow-btn {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: #fff;
+}
+
+.return-btn {
+  background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+  color: #fff;
+}
+
+.reserve-btn {
+  background: #fff;
+  color: #0066CC;
+  border: 2rpx solid #0066CC;
+}
+
+.notice-item {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 2;
+}
