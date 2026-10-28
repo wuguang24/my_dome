@@ -1,0 +1,22 @@
+以下是LVGL设计的UI中各个标签或案件对应的功能
+
+标签类（显示数值/文本）
+cunzi：用来显示雷达模块获取的人体存在信息（显示YES或NO）
+tidong：用来显示雷达模块获取的人体体动
+shijian：用来显示网络时间（YYYY-MM-DD HH:MM:SS）
+jingdu：用来显示经度
+weidu：用来显示纬度
+juli：用来显示雷达获得的距离（cm）
+xinlv：用来显示心率（bpm）
+huxi：用来显示呼吸次数（rpm）
+wendu：用来显示温度（°C）
+shidu：用来显示湿度（%RH）
+gpszhuangtai：用来显示GPS的状态，在故障检测页面（No/2D/3D）
+wangluozhuangtai：用来显示网络状态，在故障检测页面，就是看看ESP32 Online/Offline，事件触发(显示YES或NO)
+leidazhuangtai ：用来显示雷达状态，判断有没有雷达连接(显示YES或NO)
+wenshiduzhuangtai ：用来显示温湿度传感器DHT11工作是否正常(显示YES或NO)
+
+按钮/开关类（动作）
+MAIN_btn/ SAR_btn/ Fault_Diagnosis_btn：按下切换到 Main/SAR/Fault_Diagnosis 页面(这里的切换逻辑在LVGL设计时已经实现)
+led_btn / led1：控制 LED1（ON/OFF 切换）
+fengmingqi_btn/ buzzer：控制蜂鸣器（ON/OFF 切换）

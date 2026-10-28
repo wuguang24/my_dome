@@ -1,0 +1,1 @@
+/* Stub font file to satisfy Keil project reference. The project no longer uses SimSun fonts. */
