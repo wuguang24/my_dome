@@ -1,0 +1,36 @@
+# ===== Keil MDK 编译输出 =====
+Objects/
+Listings/
+OBJ/
+DebugConfig/
+*.uvguix.*
+*.bak
+*.dep
+*.iex
+*.lnp
+*.lst
+*.map
+*.htm
+*.axf
+*.crf
+*.d
+*.o
+*.hex
+*.build_log.htm
+*.lvt
+*.lvf
+*.scvd
+
+# ===== TI CCS/其他 IDE =====
+Debug/
+Release/
+Event.dot
+*.7z
+*.zip
+*.rar
+
+# ===== IDE/系统 =====
+JLinkLog.ini
+JLinkLog.txt
+Thumbs.db
+.DS_Store
